@@ -3,7 +3,6 @@ import java.util.Scanner;
 
 public class Main {
     static Scanner scanner = new Scanner(System.in);
-
     static ArrayList<Show> shows = new ArrayList<>();
     static ArrayList<Actor> actors = new ArrayList<>();
     static ArrayList<Director> directors = new ArrayList<>();
@@ -20,50 +19,54 @@ public class Main {
             System.out.println("6. Создать оперный спектакль");
             System.out.println("7. Создать балетный спектакль");
             System.out.println("8. Распределить актёра по спектаклям");
-            System.out.println("9. Убрать актёра из спектакля");
-            System.out.println("10. Показать всех действующих лиц спектакля");
-            System.out.println("11. Показать либретто оперы");
-            System.out.println("12. Показать либретто балета");
+            System.out.println("9. Удалить актера из спектакля");
+            System.out.println("10. Заменить актера в спектакле на другого");
+            System.out.println("11. Показать полную информацию о спектакле");
             System.out.println("0. Выход");
-
             System.out.println("Выбор: ");
-            String command = scanner.nextLine().trim();
 
+            String command = scanner.nextLine().trim();
             switch (command) {
                 case "1":
-                    createActor();
+                    new Actor("", "", Gender.MALE, 0).createActor();
                     break;
                 case "2":
-                    createDirector();
+                    new Director("", "", Gender.MALE, 0).createDirector();
                     break;
                 case "3":
-                    createMusicAuthor();
+                    new MusicAuthor("", "", Gender.MALE).createMusicAuthor();
                     break;
                 case "4":
-                    createChoreographer();
+                    new Choreographer("", "", Gender.MALE).createChoreographer();
                     break;
                 case "5":
-                    createShow();
+                    new Show("", 0, null).createShow();
                     break;
                 case "6":
-                    createOpera();
+                    Opera.createOpera();
                     break;
                 case "7":
-                    createBallet();
+                    new Ballet
+                            ("",
+                                    0,
+                                    null,
+                                    null,
+                                    "",
+                                    null
+                            )
+                            .createBallet();
                     break;
                 case "8":
-                    assignActor();
+                    new Actor("", "", Gender.MALE, 0).assignActor();
                     break;
                 case "9":
-                    removeActorFromShow();
+                    new Actor("", "", Gender.MALE, 0).removeActorFromShow();
+                    break;
                 case "10":
-                    showActors();
+                    replaceActorInShow();
                     break;
                 case "11":
-                    showOperaLibretto();
-                    break;
-                case "12":
-                    showBalletLibretto();
+                    findShow();
                     break;
                 case "0":
                     System.out.println("Выход из программы");
@@ -74,354 +77,63 @@ public class Main {
         }
     }
 
-    static void createActor() {
-        System.out.println("Имя: ");
-        String name = scanner.nextLine();
-        System.out.println("Фамилия: ");
-        String surname = scanner.nextLine();
-
-        Gender gender;
-        while (true) {
-            System.out.println("Пол (М/Ж): ");
-            String g = scanner.nextLine().trim().toUpperCase();
-            if (g.equals("М")) {
-                gender = Gender.MALE;
-                break;
-            } else if (g.equals("Ж")) {
-                gender = Gender.FEMALE;
-                break;
-            } else {
-                System.out.println("Ошибка! Введите М или Ж.");
-            }
-        }
-
-        System.out.println("Рост: ");
-        String heightStr = scanner.nextLine();
-        int height = Integer.parseInt(heightStr);
-
-        actors.add(new Actor(name, surname, gender, height));
-        System.out.println("Актёр создан");
-    }
-
-    static void createDirector() {
-        System.out.println("Имя: ");
-        String name = scanner.nextLine();
-        System.out.println("Фамилия: ");
-        String surname = scanner.nextLine();
-
-        Gender gender;
-        while (true) {
-            System.out.println("Пол (М/Ж): ");
-            String g = scanner.nextLine().trim().toUpperCase();
-            if (g.equals("М")) {
-                gender = Gender.MALE;
-                break;
-            } else if (g.equals("Ж")) {
-                gender = Gender.FEMALE;
-                break;
-            } else System.out.println("Ошибка! Введите М или Ж.");
-        }
-
-        System.out.println("Количество спектаклей: ");
-        String countStr = scanner.nextLine();
-        int count = Integer.parseInt(countStr);
-
-        directors.add(new Director(name, surname, gender, count));
-        System.out.println("Режиссёр создан");
-    }
-
-    static void createMusicAuthor() {
-        System.out.println("Имя: ");
-        String name = scanner.nextLine();
-        System.out.println("Фамилия: ");
-        String surname = scanner.nextLine();
-
-        Gender gender;
-        while (true) {
-            System.out.println("Пол (М/Ж): ");
-            String g = scanner.nextLine().trim().toUpperCase();
-            if (g.equals("М")) {
-                gender = Gender.MALE;
-                break;
-            } else if (g.equals("Ж")) {
-                gender = Gender.FEMALE;
-                break;
-            } else System.out.println("Ошибка! Введите М или Ж.");
-        }
-
-        musicAuthors.add(new MusicAuthor(name, surname, gender));
-        System.out.println("Музыкальный автор создан");
-    }
-
-    static void createChoreographer() {
-        System.out.println("Имя: ");
-        String name = scanner.nextLine();
-        System.out.println("Фамилия: ");
-        String surname = scanner.nextLine();
-
-        Gender gender;
-        while (true) {
-            System.out.println("Пол (М/Ж): ");
-            String g = scanner.nextLine().trim().toUpperCase();
-            if (g.equals("М")) {
-                gender = Gender.MALE;
-                break;
-            } else if (g.equals("Ж")) {
-                gender = Gender.FEMALE;
-                break;
-            } else System.out.println("Ошибка! Введите М или Ж.");
-        }
-
-        choreographers.add(new Choreographer(name, surname, gender));
-        System.out.println("Хореограф создан");
-    }
-
-    static void createShow() {
-        System.out.println("Название: ");
-        String title = scanner.nextLine();
-
-        for (Show show : shows)
-            if (show.getTitle().equalsIgnoreCase(title)) {
-                System.out.println("Спектакль уже существует");
-                return;
-            }
-
-        if (directors.isEmpty()) {
-            System.out.println("Нет режиссёров!");
+    private static void findShow() {
+        if (shows.isEmpty()) {
+            System.out.println("Нет спектаклей!");
             return;
         }
-        for (int i = 0; i < directors.size(); i++) {
-            System.out.println((i + 1) + ". " + directors.get(i));
+        System.out.println("Название спектакля: ");
+        String title = scanner.nextLine();
+        boolean found = false;
+        for (Show show : shows) {
+            if (show.getTitle().equalsIgnoreCase(title)) {
+                show.showInfo();
+                found = true;
+            }
         }
-        System.out.println("Выберите режиссёра: ");
-        String indexStr = scanner.nextLine();
-        Director director = directors.get(Integer.parseInt(indexStr) - 1);
-
-        System.out.println("Длительность: ");
-        String durStr = scanner.nextLine();
-        int duration = Integer.parseInt(durStr);
-
-        shows.add(new Show(title, duration, director));
-        System.out.println("Спектакль создан");
+        if (!found) {
+            System.out.println("Спектакль не найден");
+        }
     }
 
-    static void createOpera() {
-        System.out.println("Название: ");
-        String title = scanner.nextLine();
-        for (Show show : shows)
-            if (show.getTitle().equalsIgnoreCase(title)) {
-                System.out.println("Опера уже существует");
-                return;
-            }
-
-        if (directors.isEmpty() || musicAuthors.isEmpty()) {
-            System.out.println("Нет режиссёров или музыкальных авторов!");
+    private static void replaceActorInShow() {
+        if (shows.isEmpty()) {
+            System.out.println("Нет спектаклей для редактирования!");
             return;
         }
-        for (int i = 0; i < directors.size(); i++) {
-            System.out.println((i + 1) + ". " + directors.get(i));
+        System.out.println("Выберите спектакль для замены актёра:");
+        for (int i = 0; i < shows.size(); i++) {
+            System.out.println((i + 1) + ". " + shows.get(i).getTitle());
         }
-        System.out.println("Выберите режиссёра: ");
-        Director director = directors.get(Integer.parseInt(scanner.nextLine()) - 1);
-
-        for (int i = 0; i < musicAuthors.size(); i++) {
-            System.out.println((i + 1) + ". " + musicAuthors.get(i));
-        }
-        System.out.println("Выберите музыкального автора: ");
-        MusicAuthor author = musicAuthors.get(Integer.parseInt(scanner.nextLine()) - 1);
-
-        System.out.println("Длительность: ");
-        int duration = Integer.parseInt(scanner.nextLine());
-        System.out.println("Либретто: ");
-        String libretto = scanner.nextLine();
-        System.out.println("Размер хора: ");
-        int choir = Integer.parseInt(scanner.nextLine());
-
-        shows.add(new Opera(title, duration, director, author, libretto, choir));
-        System.out.println("Опера создана");
-    }
-
-    static void createBallet() {
-        System.out.println("Название: ");
-        String title = scanner.nextLine();
-        for (Show show : shows)
-            if (show.getTitle().equalsIgnoreCase(title)) {
-                System.out.println("Балет уже существует");
-                return;
-            }
-
-        if (directors.isEmpty() || musicAuthors.isEmpty() || choreographers.isEmpty()) {
-            System.out.println("Нет необходимых сотрудников!");
+        int showIndex = Integer.parseInt(scanner.nextLine()) - 1;
+        if (showIndex < 0 || showIndex >= shows.size()) {
+            System.out.println("Некорректный выбор спектакля");
             return;
         }
-        for (int i = 0; i < directors.size(); i++) {
-            System.out.println((i + 1) + ". " + directors.get(i));
+        Show selectedShow = shows.get(showIndex);
+        if (selectedShow.getListOfActors().isEmpty()) {
+            System.out.println("В этом спектакле нет актёров для замены!");
+            return;
         }
-        System.out.println("Выберите режиссёра: ");
-        Director director = directors.get(Integer.parseInt(scanner.nextLine()) - 1);
-
-        for (int i = 0; i < musicAuthors.size(); i++) {
-            System.out.println((i + 1) + ". " + musicAuthors.get(i));
-        }
-        System.out.println("Выберите музыкального автора: ");
-        MusicAuthor author = musicAuthors.get(Integer.parseInt(scanner.nextLine()) - 1);
-
-        for (int i = 0; i < choreographers.size(); i++) {
-            System.out.println((i + 1) + ". " + choreographers.get(i));
-        }
-        System.out.println("Выберите хореографа: ");
-        Choreographer ch = choreographers.get(Integer.parseInt(scanner.nextLine()) - 1);
-
-        System.out.println("Длительность: ");
-        int duration = Integer.parseInt(scanner.nextLine());
-        System.out.println("Либретто: ");
-        String libretto = scanner.nextLine();
-
-        shows.add(new Ballet(title, duration, director, author, libretto, ch));
-        System.out.println("Балет создан");
-    }
-
-    static void assignActor() {
+        System.out.println("Введите фамилию актёра, которого хотите заменить: ");
+        String surnameToReplace = scanner.nextLine();
         if (actors.isEmpty()) {
-            System.out.println("Нет актёров!");
+            System.out.println("Нет доступных актёров для замены!");
             return;
         }
+        System.out.println("Выберите нового актёра:");
         for (int i = 0; i < actors.size(); i++) {
             System.out.println((i + 1) + ". " + actors.get(i));
         }
-        System.out.println("Выберите актёра: ");
-        Actor actor = actors.get(Integer.parseInt(scanner.nextLine()) - 1);
-
-        System.out.println("Количество спектаклей: ");
-        int count = Integer.parseInt(scanner.nextLine());
-
-        for (int i = 0; i < count; i++) {
-            System.out.println("Название спектакля: ");
-            String title = scanner.nextLine();
-            boolean found = false;
-            for (Show show : shows) {
-                if (show.getTitle().equalsIgnoreCase(title)) {
-                    show.addActor(actor);
-                    found = true;
-                }
-            }
-            if (!found) System.out.println("Спектакль не найден");
-        }
-    }
-
-    static void removeActorFromShow() {
-        if (shows.isEmpty()) {
-            System.out.println("Нет созданных спектаклей!");
+        int actorIndex = Integer.parseInt(scanner.nextLine()) - 1;
+        if (actorIndex < 0 || actorIndex >= actors.size()) {
+            System.out.println("Некорректный выбор актёра");
             return;
         }
-
-        System.out.println("Название спектакля: ");
-        String title = scanner.nextLine();
-        Show targetShow = null;
-
-        for (Show show : shows) {
-            if (show.getTitle().equalsIgnoreCase(title)) {
-                targetShow = show;
-                break;
-            }
-        }
-
-        if (targetShow == null) {
-            System.out.println("Спектакль не найден!");
-            return;
-        }
-
-        if (targetShow.getListOfActors().isEmpty()) {
-            System.out.println("В спектакле нет актёров!");
-            return;
-        }
-
-        System.out.println("Актёры в спектакле:");
-        for (int i = 0; i < targetShow.getListOfActors().size(); i++) {
-            System.out.println((i + 1) + ". " + targetShow.getListOfActors().get(i));
-        }
-
-        System.out.println("Выберите номер актёра для удаления: ");
-        int index = Integer.parseInt(scanner.nextLine()) - 1;
-
-        if (index < 0 || index >= targetShow.getListOfActors().size()) {
-            System.out.println("Неверный номер актёра!");
-            return;
-        }
-
-        Actor removed = targetShow.getListOfActors().remove(index);
-        System.out.println("Актёр " + removed + " удалён из спектакля " + targetShow.getTitle());
-    }
-
-    static void showActors() {
-        System.out.println("Название спектакля: ");
-        String title = scanner.nextLine();
-        boolean found = false;
-
-        for (Show show : shows) {
-            if (show.getTitle().equalsIgnoreCase(title)) {
-                found = true;
-
-                System.out.println("Действующие лица спектакля " + show.getTitle() + ":");
-
-                if (show.director != null) {
-                    System.out.println("Режиссёр: " + show.director);
-                }
-
-                if (show.getListOfActors().isEmpty()) {
-                    System.out.println("Актёры: отсутствуют");
-                } else {
-                    System.out.println("Актёры:");
-                    for (Actor actor : show.getListOfActors()) {
-                        System.out.println(" - " + actor);
-                    }
-                }
-
-                if (show instanceof MusicalShow ms && ms.musicAuthor != null) {
-                    System.out.println("Музыкальный автор: " + ms.musicAuthor);
-                }
-
-                if (show instanceof Ballet ballet && ballet.choreographer != null) {
-                    System.out.println("Хореограф: " + ballet.choreographer);
-                }
-
-                if (show instanceof Opera opera) {
-                    System.out.println("Хор: " + opera.choirSize + " человек");
-                }
-            }
-        }
-
-        if (!found) System.out.println("Спектакль не найден");
-    }
-
-    static void showOperaLibretto() {
-        System.out.println("Название оперы: ");
-        String title = scanner.nextLine();
-        boolean found = false;
-        for (Show show : shows) {
-            if (show instanceof Opera && show.getTitle().equalsIgnoreCase(title)) {
-                ((Opera) show).printLibretto();
-                found = true;
-            }
-        }
-        if (!found) {
-            System.out.println("Опера не найдена");
-        }
-    }
-
-    static void showBalletLibretto() {
-        System.out.println("Название балета: ");
-        String title = scanner.nextLine();
-        boolean found = false;
-        for (Show show : shows) {
-            if (show instanceof Ballet && show.getTitle().equalsIgnoreCase(title)) {
-                ((Ballet) show).printLibretto();
-                found = true;
-            }
-        }
-        if (!found) {
-            System.out.println("Балет не найден");
-        }
+        Actor newActor = actors.get(actorIndex);
+        selectedShow.replaceActor(surnameToReplace, newActor);
     }
 }
+
+
 
