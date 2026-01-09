@@ -23,7 +23,7 @@ class MusicalShow extends Show {
 
     @Override
     public String toString() {
-        return super.toString() + ", музыкальный автор: " + musicAuthor;
+        return super.toString() + ", музыкальный автор: " + musicAuthor + ". Либретто: " + librettoText;
     }
 
     @Override

@@ -30,41 +30,7 @@ class Show {
 
     @Override
     public String toString() {
-        return title + " (" + duration + " мин), режиссёр: " + director.name + " " + director.surname;
-    }
-
-    public void addActor(Actor actor) {
-        if (listOfActors.contains(actor)) {
-            System.out.println("Актер уже добавлен");
-        } else {
-            listOfActors.add(actor);
-            System.out.println("Актер добавлен");
-        }
-    }
-
-    public void createShow() {
-        System.out.println("Название: ");
-        String title = Main.scanner.nextLine();
-        for (Show show : Main.shows)
-            if (show.getTitle().equalsIgnoreCase(title)) {
-                System.out.println("Спектакль уже существует");
-                return;
-            }
-        if (Main.directors.isEmpty()) {
-            System.out.println("Нет режиссёров!");
-            return;
-        }
-        for (int i = 0; i < Main.directors.size(); i++) {
-            System.out.println((i + 1) + ". " + Main.directors.get(i));
-        }
-        System.out.println("Выберите режиссёра: ");
-        String indexStr = Main.scanner.nextLine();
-        Director director = Main.directors.get(Integer.parseInt(indexStr) - 1);
-        System.out.println("Длительность: ");
-        String durStr = Main.scanner.nextLine();
-        int duration = Integer.parseInt(durStr);
-        Main.shows.add(new Show(title, duration, director));
-        System.out.println("Спектакль создан");
+        return title + " (" + duration + " мин), режиссер: " + director;
     }
 
     public void showInfo() {
@@ -81,20 +47,15 @@ class Show {
         }
     }
 
-    public void replaceActor(String surname, Actor newActor) {
+    public boolean replaceActor(String surname, Actor newActor) {
         boolean found = false;
         for (int i = 0; i < listOfActors.size(); i++) {
-            Actor currentActor = listOfActors.get(i);
-            if (currentActor.getSurname().equalsIgnoreCase(surname)) {
+            if (listOfActors.get(i).getSurname().equalsIgnoreCase(surname)) {
                 listOfActors.set(i, newActor);
                 found = true;
             }
         }
-        if (!found) {
-            System.out.println("Актера с такой фамилией не существует");
-        } else {
-            System.out.println("Актеры с такой фамилией '" + surname + "' заменены на " + newActor);
-        }
+        return found;
     }
 }
 
