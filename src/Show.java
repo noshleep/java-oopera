@@ -4,7 +4,7 @@ class Show {
     protected String title;
     protected int duration;
     protected Director director;
-    private final ArrayList<Actor> listOfActors = new ArrayList<>();
+    protected ArrayList<Actor> listOfActors = new ArrayList<>();
 
     public Show(String title, int duration, Director director) {
         this.title = title;
@@ -20,10 +20,6 @@ class Show {
         return duration;
     }
 
-    public Director getDirector() {
-        return director;
-    }
-
     public ArrayList<Actor> getListOfActors() {
         return listOfActors;
     }
@@ -33,10 +29,11 @@ class Show {
         return title + " (" + duration + " мин), режиссер: " + director;
     }
 
-    public void showInfo() {
-        System.out.println("Название: " + getTitle());
-        System.out.println("Длительность: " + duration + " мин");
+    public void printDirector() {
         System.out.println("Режиссер: " + director);
+    }
+
+    public void printListOfActors() {
         if (listOfActors.isEmpty()) {
             System.out.println("Актеры отсутствуют");
         } else {
@@ -47,15 +44,11 @@ class Show {
         }
     }
 
-    public boolean replaceActor(String surname, Actor newActor) {
-        boolean found = false;
-        for (int i = 0; i < listOfActors.size(); i++) {
-            if (listOfActors.get(i).getSurname().equalsIgnoreCase(surname)) {
-                listOfActors.set(i, newActor);
-                found = true;
-            }
-        }
-        return found;
+    public void showInfo() {
+        System.out.println("Название: " + getTitle());
+        System.out.println("Длительность: " + duration + " мин");
+        printDirector();
+        printListOfActors();
     }
 }
 

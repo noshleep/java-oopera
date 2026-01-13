@@ -411,9 +411,17 @@ public class Main {
             return;
         }
         Actor newActor = actors.get(actorIndex);
-        if (selectedShow.replaceActor(surnameToReplace, newActor)) {
-            System.out.println("Актер заменен");
-        } else {
+        boolean found = false;
+        for (int i = 0; i < selectedShow.getListOfActors().size(); i++) {
+            Actor current = selectedShow.getListOfActors().get(i);
+            if (current.getSurname().equalsIgnoreCase(surnameToReplace)) {
+                selectedShow.getListOfActors().set(i, newActor);
+                System.out.println("Актер заменен");
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
             System.out.println("Актер не найден");
         }
     }
